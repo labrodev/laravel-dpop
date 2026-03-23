@@ -11,11 +11,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.3] — 2026-03-23
+
+### Added
+
+- Fixed firebase vurnerable version from 6x to 7x
+
+## [1.0.2] — 2026-03-23
+
+### Added
+
+- Fixed composer requirements
+
 ## [1.0.1] — 2026-03-23
 
 ### Added
 
-- PHP8.5 and Laravel 13 support
+- PHP8.5 and Laravel 13 support added
 
 ## [1.0.0] — 2026-03-23
 
