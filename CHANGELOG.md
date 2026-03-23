@@ -11,7 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.0.0] — 2025-01-01
+## [1.0.1] — 2026-03-23
+
+### Added
+
+- PHP8.5 and Laravel 13 support
+
+## [1.0.0] — 2026-03-23
 
 ### Added
 
@@ -29,5 +35,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Full error code catalogue: `D.E.1` – `D.E.14`, `C.O.1`, `S.1`, `E.I.1`, `E.I.2`
 - 49 tests, 103 assertions covering all 13 DPoP steps individually
 
-[Unreleased]: https://github.com/labrodev/laravel-dpop/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/labrodev/laravel-dpop/releases/tag/v1.0.0
