@@ -1,5 +1,5 @@
 {
-    "name": "labrodev/dpop",
+    "name": "labrodev/laravel-dpop",
     "description": "RFC 9449 DPoP for Laravel — issues EC P-256-bound JWTs and verifies DPoP proofs on protected routes.",
     "keywords": [
         "labrodev",
