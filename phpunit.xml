@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
+    </source>
+    <php>
+        <env name="APP_KEY" value="base64:2fl+Ktvkfl+Fuz4Qp/A75G2RTiWVA/ZoKZvp6fiiM10="/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value=":memory:"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="DPOP_JWT_SECRET" value="test-secret-key-for-unit-tests-only-64-chars-long-padding-here!"/>
+        <env name="DPOP_JWT_ALGORITHM" value="HS256"/>
+        <env name="DPOP_JWT_LIFETIME" value="3600"/>
+        <env name="DPOP_CLOCK_SKEW" value="30"/>
+        <env name="DPOP_JTI_TTL" value="600"/>
+        <env name="DPOP_PROOF_HEADER" value="DPoP"/>
+        <env name="DPOP_ALLOWED_ORIGINS" value=""/>
+        <env name="DPOP_TOKEN_ROUTE" value="api/dpop/token"/>
+    </php>
+</phpunit>

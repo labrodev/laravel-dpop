@@ -1,0 +1,38 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# Composer
+composer.lock
+
+# Laravel / testbench workbench
+/workbench/
+/.phpunit.result.cache
+/.phpunit.cache/
+
+# PHPStan
+/.phpstan.cache/
+/phpstan-baseline.neon
+
+# Coverage
+/coverage/
+/.coverage/
+coverage.xml
+
+# IDE
+/.idea/
+/.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Build artefacts
+/dist/
+/build/
+*.phar
