@@ -15,6 +15,7 @@ use Jose\Component\Signature\JWSVerifier;
 use Jose\Component\Signature\Serializer\CompactSerializer;
 use Labrodev\Dpop\Exceptions\InvalidDPopProofException;
 use Labrodev\Dpop\Support\DPopProofParser;
+use Labrodev\Dpop\Support\HtuMatchesRequest;
 use Labrodev\Dpop\Support\JtiStore;
 use Labrodev\Dpop\Support\Jwk;
 use Throwable;
@@ -121,10 +122,10 @@ final class DPopVerifier
             throw new InvalidDPopProofException(errorCode: 'D.E.9');
         }
 
-        // Step 10 — htu matches fullUrl (NEVER url())
+        // Step 10 — htu matches fullUrl (NEVER url()); allow canonical equivalence (query order)
         $htu = (string) ($proof['htu'] ?? '');
 
-        if ($htu !== $request->fullUrl()) {
+        if (! HtuMatchesRequest::matches($htu, $request)) {
             throw new InvalidDPopProofException(errorCode: 'D.E.10');
         }
 

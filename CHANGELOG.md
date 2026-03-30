@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.5] — 2026-03-30
+
+### Fixed
+
+- DPoP proof `htu` (step 10) accepts URLs canonically equivalent to `Request::fullUrl()` (e.g. differing GET query parameter order), matching Symfony/Laravel query normalization.
+
+## [1.0.4] — 2026-03-30
+
+### Added
+
+- Add extra claims argument for Token Data to implement extra payload code inside the generated token 
+
 ## [1.0.3] — 2026-03-23
 
 ### Added
