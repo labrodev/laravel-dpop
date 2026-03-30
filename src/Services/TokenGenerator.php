@@ -34,14 +34,17 @@ final class TokenGenerator implements DPopTokenGeneratorInterface
             static fn (string $s): bool => $s !== '',
         )));
 
-        $payload = [
-            'exp' => $now + $lifetime,
-            'iat' => $now,
-            'iss' => config('app.url'),
-            'jkt' => $jkt,
-            'scp' => $scopes,
-            'sub' => $jkt,
-        ];
+        $payload = array_merge(
+            $tokenRequestData->extraClaims,
+            [
+                'exp' => $now + $lifetime,
+                'iat' => $now,
+                'iss' => config('app.url'),
+                'jkt' => $jkt,
+                'scp' => $scopes,
+                'sub' => $jkt,
+            ],
+        );
 
         $token = JWT::encode(
             alg: $algorithm,

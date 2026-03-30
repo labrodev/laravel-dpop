@@ -139,4 +139,64 @@ final class TokenGeneratorTest extends TestCase
         $this->assertCount(2, $scopes);
         $this->assertNotContains('read write', $scopes);
     }
+
+    #[Test]
+    public function it_merges_extra_claims_into_the_jwt_payload(): void
+    {
+        ['publicJwk' => $publicJwk] = $this->generateEcKeyPair();
+
+        $tokenRequestData = TokenRequestData::from([
+            'jwk' => $publicJwk,
+            'scope' => 'read',
+            'extra_claims' => [
+                'plugin_uuid' => '550e8400-e29b-41d4-a716-446655440000',
+                'origin' => 'https://example.com',
+            ],
+        ]);
+
+        $issued = $this->generator->generate(tokenRequestData: $tokenRequestData);
+
+        $decoded = (array) JWT::decode(
+            jwt: $issued->value,
+            keyOrKeyArray: new Key('test-secret-key-for-unit-tests-only-64-chars-long-padding-here!', 'HS256'),
+        );
+
+        $this->assertSame('550e8400-e29b-41d4-a716-446655440000', $decoded['plugin_uuid']);
+        $this->assertSame('https://example.com', $decoded['origin']);
+    }
+
+    #[Test]
+    public function it_does_not_allow_extra_claims_to_override_standard_claims(): void
+    {
+        ['publicJwk' => $publicJwk] = $this->generateEcKeyPair();
+
+        $jkt = Jwk::thumbprint(jwk: $publicJwk);
+
+        $tokenRequestData = TokenRequestData::from([
+            'jwk' => $publicJwk,
+            'scope' => 'read',
+            'extra_claims' => [
+                'exp' => 1,
+                'iat' => 1,
+                'iss' => 'https://evil.example',
+                'jkt' => 'tampered',
+                'scp' => ['evil'],
+                'sub' => 'tampered',
+            ],
+        ]);
+
+        $issued = $this->generator->generate(tokenRequestData: $tokenRequestData);
+
+        $decoded = (array) JWT::decode(
+            jwt: $issued->value,
+            keyOrKeyArray: new Key('test-secret-key-for-unit-tests-only-64-chars-long-padding-here!', 'HS256'),
+        );
+
+        $this->assertSame($jkt, $decoded['sub']);
+        $this->assertSame($jkt, $decoded['jkt']);
+        $this->assertContains('read', (array) $decoded['scp']);
+        $this->assertNotSame('tampered', $decoded['sub']);
+        $this->assertNotSame('https://evil.example', $decoded['iss']);
+        $this->assertGreaterThan(time(), (int) $decoded['exp']);
+    }
 }

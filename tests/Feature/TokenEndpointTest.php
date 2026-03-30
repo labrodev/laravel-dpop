@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Labrodev\Dpop\Tests\Feature;
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use Labrodev\Dpop\Tests\Concerns\GeneratesDPopProofs;
 use Labrodev\Dpop\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
@@ -93,5 +95,33 @@ final class TokenEndpointTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
+    }
+
+    #[Test]
+    public function it_includes_extra_claims_in_the_issued_token(): void
+    {
+        ['publicJwk' => $publicJwk] = $this->generateEcKeyPair();
+
+        $response = $this->postJson('/api/dpop/token', [
+            'jwk' => $publicJwk,
+            'scope' => 'read',
+            'extra_claims' => [
+                'plugin_uuid' => '550e8400-e29b-41d4-a716-446655440000',
+                'origin' => 'https://widget.example',
+            ],
+        ]);
+
+        $response->assertOk();
+
+        $token = $response->json('data.attributes.token');
+        $this->assertIsString($token);
+
+        $decoded = (array) JWT::decode(
+            jwt: $token,
+            keyOrKeyArray: new Key('test-secret-key-for-unit-tests-only-64-chars-long-padding-here!', 'HS256'),
+        );
+
+        $this->assertSame('550e8400-e29b-41d4-a716-446655440000', $decoded['plugin_uuid']);
+        $this->assertSame('https://widget.example', $decoded['origin']);
     }
 }
